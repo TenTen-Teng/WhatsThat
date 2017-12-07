@@ -13,12 +13,14 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet weak var tableView: UITableView!
     
-
     @IBOutlet weak var imageView: UIImageView!
     
     var results = [GoogleVisionResult]()
     let googleVisionAPIManager = GoogleVisionAPIManager()
     var pickedImage: UIImage!
+    var imageName = ""
+    let persistanceManager = PersistanceManager()
+    var imagePath = NSURL()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +66,11 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         
         imageView.image = image
+        
         pickedImage = image
+        imageName = String(persistanceManager.fetchFavoriteList().count)
+        saveImageDocumentDirectory(image: pickedImage, name: String(imageName))
+        
         MBProgressHUD.showAdded(to: self.view, animated: true)
         googleVisionAPIManager.delegate = self
         googleVisionAPIManager.fetchGoogleVisionResults(image: image)
@@ -96,8 +102,33 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
         
         photoDetailsViewController.titleName = sender as! String
+        photoDetailsViewController.imageName = imageName
     }
     
+    func getDirectoryPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+    
+    func saveImageDocumentDirectory(image: UIImage, name: String){
+        let fileManager = FileManager.default
+        let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(name + ".jpg")
+        let image = image
+        print(paths)
+        let imageData = UIImageJPEGRepresentation(image, 0.5)
+        fileManager.createFile(atPath: paths as String, contents: imageData, attributes: nil)
+    }
+    
+    func createDirectory(){
+        let fileManager = FileManager.default
+        let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("WhatsThatDirectory")
+        if !fileManager.fileExists(atPath: paths){
+            try! fileManager.createDirectory(atPath: paths, withIntermediateDirectories: true, attributes: nil)
+        }else{
+            print("Already dictionary created.")
+        }
+    }
 }
 
 extension PhotoIdenViewController: IdentificationDelegate {

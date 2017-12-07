@@ -13,16 +13,15 @@ import MBProgressHUD
 import Toast_Swift
 
 class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelegate {
-
-    
     @IBOutlet weak var titleTextLabel: UILabel!
-    
     @IBOutlet weak var contentTextView: UITextView!
+    
     var details = ""
     var wikiUrl = "https://en.wikipedia.org/wiki/"
     var titleName = "title"
-    var wikiResult = WikipediaResult(title: "", content: "")
+    var wikiResult = WikipediaResult(title: "", content: "", imageName: "")
     let wikiAPIManager = WikipediaAPIManager()
+    var imageName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +29,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         
         wikiAPIManager.delegate = self
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        wikiAPIManager.fetchWikiDetailsResults(keyword: titleName)
-        
+        wikiAPIManager.fetchWikiDetailsResults(keyword: titleName, imageName: imageName)
     }
     
     override func didReceiveMemoryWarning() {
@@ -40,9 +38,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     }
     
     
-
     @IBAction func likeButtonPressed(_ sender: Any) {
-        
         let currentFavoriteList = PersistanceManager.likeInstance.fetchFavoriteList()
         
         if currentFavoriteList.count != 0 {
@@ -57,7 +53,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
             self.view.makeToast("saved! :)")
         }
     }
-
+    
     
     
     @IBAction func wikiPagePressed(_ sender: Any) {
@@ -65,7 +61,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         present(webSafari, animated: true, completion: nil)
     }
     
-
+    
     
     @IBAction func tweetButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "tweetSegue", sender: titleName)
@@ -84,7 +80,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         
         present(activityViewController, animated: true, completion: nil)
     }
-
+    
     
 }
 
@@ -110,7 +106,7 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
             case .networkRequestFailed:
                 let retryAction = UIAlertAction(title: "Retry", style: .default, handler: { (action) in
                     MBProgressHUD.showAdded(to: self.view, animated: true)
-                    self.wikiAPIManager.fetchWikiDetailsResults(keyword: self.titleName)
+                    self.wikiAPIManager.fetchWikiDetailsResults(keyword: self.titleName, imageName: self.imageName)
                 })
                 
                 let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -129,3 +125,4 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
     }
     
 }
+

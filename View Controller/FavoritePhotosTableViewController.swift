@@ -7,7 +7,6 @@
 //
 import UIKit
 
-
 class FavoritePhotosTableViewController: UITableViewController {
     
     var favoriteList = PersistanceManager.likeInstance.fetchFavoriteList()
@@ -30,10 +29,23 @@ class FavoritePhotosTableViewController: UITableViewController {
         
         let favoriteItem = favoriteList[indexPath.row]
         
+        let fileManager = FileManager.default
+        let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(favoriteItem.imageName + ".jpg")
+        if fileManager.fileExists(atPath: imagePAth){
+            cell.favrImage.image = UIImage(contentsOfFile: imagePAth)!
+        }else{
+            print("No Image")
+        }
+        
         cell.photoIdenText.text = favoriteItem.title
-        //cell.imageView.image = favoriteItem.image
+        
         return cell
     }
     
+    func getDirectoryPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
 }
 
