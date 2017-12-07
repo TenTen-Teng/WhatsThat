@@ -57,7 +57,10 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     
     
     @IBAction func wikiPagePressed(_ sender: Any) {
+
+        
         let webSafari = SFSafariViewController(url: URL(string: wikiUrl)!)
+        
         present(webSafari, animated: true, completion: nil)
     }
     
@@ -88,7 +91,13 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
 extension PhotoDetailsViewController: WikiDetailsDelegate {
     func detailsFound(wikiDetails: WikipediaResult) {
         self.details = wikiDetails.title
-        self.wikiUrl = self.wikiUrl + wikiDetails.title
+        
+        let range = NSMakeRange(0, wikiDetails.title.count)
+        let regular = try! NSRegularExpression(pattern: " ", options:.caseInsensitive)
+        //let newKeyWord = regular.replaceMatches(in: keyword as! NSMutableString, options: NSRegularExpression.MatchingOptions, range: range, withTemplate: "_")
+        let newKeyWord = regular.stringByReplacingMatches(in: wikiDetails.title, options: [], range: range, withTemplate: "_")
+        
+        self.wikiUrl = self.wikiUrl + newKeyWord
         self.wikiResult = wikiDetails
         DispatchQueue.main.async {
             MBProgressHUD.hide(for: self.view, animated: true)

@@ -25,7 +25,7 @@ class WikipediaAPIManager {
     func fetchWikiDetailsResults(keyword: String, imageName: String)
     {
         var urlComponents = URLComponents(string: "https://en.wikipedia.org/w/api.php?")!
-        
+            
         urlComponents.queryItems = [
             URLQueryItem(name: "format", value: "json"),
             URLQueryItem(name: "action", value: "query"),
