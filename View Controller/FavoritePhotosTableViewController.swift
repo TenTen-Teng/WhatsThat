@@ -42,6 +42,16 @@ class FavoritePhotosTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "favorDetailsSegue", sender: favoriteList[indexPath.row].title)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
+        
+        photoDetailsViewController.titleName = sender as! String
+    }
+    
     func getDirectoryPath() -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory = paths[0]

@@ -25,8 +25,8 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleTextLabel.text = titleName
         
+        titleTextLabel.text = titleName
         wikiAPIManager.delegate = self
         MBProgressHUD.showAdded(to: self.view, animated: true)
         wikiAPIManager.fetchWikiDetailsResults(keyword: titleName, imageName: imageName)
@@ -57,8 +57,6 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     
     
     @IBAction func wikiPagePressed(_ sender: Any) {
-
-        
         let webSafari = SFSafariViewController(url: URL(string: wikiUrl)!)
         
         present(webSafari, animated: true, completion: nil)
@@ -94,7 +92,6 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
         
         let range = NSMakeRange(0, wikiDetails.title.count)
         let regular = try! NSRegularExpression(pattern: " ", options:.caseInsensitive)
-        //let newKeyWord = regular.replaceMatches(in: keyword as! NSMutableString, options: NSRegularExpression.MatchingOptions, range: range, withTemplate: "_")
         let newKeyWord = regular.stringByReplacingMatches(in: wikiDetails.title, options: [], range: range, withTemplate: "_")
         
         self.wikiUrl = self.wikiUrl + newKeyWord

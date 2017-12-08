@@ -79,7 +79,6 @@ class GoogleVisionAPIManager {
             var googleVisionResults = [GoogleVisionResult]()
             for label in responses {
                 let labels = label.labelAnnotations
-                
                 for item in labels {
                     let googleVisionResult = GoogleVisionResult(mid: item.mid, description: item.description, score: String(item.score))
                     googleVisionResults.append(googleVisionResult)

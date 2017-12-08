@@ -42,7 +42,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="885.60000000000002" y="170.46476761619192"/>
+            <point key="canvasLocation" x="721" y="612"/>
         </scene>
         <!--Favorite Photos Table View Controller-->
         <scene sceneID="nLu-8z-Jd6">
@@ -84,10 +84,13 @@
                             <outlet property="delegate" destination="hia-7m-m25" id="s49-cP-yrz"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="zWE-MC-dUp" kind="show" identifier="favorDetailsSegue" id="glQ-lK-MMR"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trW-d2-TRC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="885.60000000000002" y="968.36581709145435"/>
+            <point key="canvasLocation" x="1663" y="1027"/>
         </scene>
         <!--Photo Identification View Controller-->
         <scene sceneID="Ldz-JY-w73">
@@ -195,7 +198,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bae-9I-UTQ" userLabel="Title Text Label">
-                                <rect key="frame" x="166" y="70" width="45" height="50"/>
+                                <rect key="frame" x="41" y="70" width="170" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -220,7 +223,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gqN-oh-Cpf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2429.5999999999999" y="173.16341829085459"/>
+            <point key="canvasLocation" x="2492" y="587.85607196401804"/>
         </scene>
         <!--Search Timeline Table View Controller-->
         <scene sceneID="fID-ao-g4d">
@@ -266,7 +269,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ihH-yX-fs3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7" y="170"/>
+            <point key="canvasLocation" x="-265" y="611"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="JmE-lv-BAd"/>
+    </inferredMetricsTieBreakers>
 </document>
