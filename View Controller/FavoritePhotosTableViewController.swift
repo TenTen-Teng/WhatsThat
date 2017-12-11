@@ -53,14 +53,18 @@ class FavoritePhotosTableViewController: UITableViewController {
             favoriteList.remove(at: indexPath.row)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
-            self.view.makeToast("unfavorite!")
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
-        
-        photoDetailsViewController.titleName = sender as! String
+        if (segue.identifier == "mapSegue") {
+            let mapViewController = segue.destination as! MapViewController
+            
+        } else if (segue.identifier == "favorDetailsSegue") {
+            let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
+            
+            photoDetailsViewController.titleName = sender as! String
+        }
     }
     
     func getDirectoryPath() -> String {
