@@ -22,7 +22,8 @@ class WikipediaAPIManager {
         case badJSONResponse = "Bad JSON response"
     }
     
-    func fetchWikiDetailsResults(keyword: String, imageName: String)
+
+    func fetchWikiDetailsResults(keyword: String, imageName: String, locations: [Double])
     {
         var urlComponents = URLComponents(string: "https://en.wikipedia.org/w/api.php?")!
             
@@ -82,8 +83,8 @@ class WikipediaAPIManager {
                     }
                 }
             }
-            
-            let wiki = WikipediaResult(title: title, content: content, imageName: imageName)
+
+        let wiki = WikipediaResult(title: title, content: content, imageName: imageName, locations: locations)
             
             self.delegate?.detailsFound(wikiDetails: wiki)
         }

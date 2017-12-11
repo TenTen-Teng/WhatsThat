@@ -21,8 +21,7 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
     var imageName = ""
     let persistanceManager = PersistanceManager()
     let locationFinder = LocationFinder()
-    var locLatitude = ""
-    var locLongitude = ""
+    var locations = [Double]()
     var imagePath = NSURL()
     
     override func viewDidLoad() {
@@ -107,8 +106,7 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         photoDetailsViewController.titleName = sender as! String
         photoDetailsViewController.imageName = imageName
-        photoDetailsViewController.locLatitude = locLatitude
-        photoDetailsViewController.locLongitude = locLongitude
+        photoDetailsViewController.locations = locations
     }
     
     func getDirectoryPath() -> String {
@@ -179,9 +177,8 @@ extension PhotoIdenViewController: IdentificationDelegate {
 //adhere to the LocationFinderDelegate protocol
 extension PhotoIdenViewController: LocationFinderDelegate {
     func locationFound(latitude: Double, longitude: Double) {
-        //MBProgressHUD.hide(for: self.view, animated: true)
-        locLatitude = String(latitude)
-        locLongitude = String(longitude)
+        locations.append(latitude)
+        locations.append(longitude)
     }
     
     func locationNotFound(reason: LocationFinder.FailureReason) {

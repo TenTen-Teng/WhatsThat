@@ -19,11 +19,11 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     var details = ""
     var wikiUrl = "https://en.wikipedia.org/wiki/"
     var titleName = "title"
-    var wikiResult = WikipediaResult(title: "", content: "", imageName: "")
+
+    var wikiResult = WikipediaResult(title: "", content: "", imageName: "", locations: [])
     let wikiAPIManager = WikipediaAPIManager()
     var imageName = ""
-    var locLatitude = ""
-    var locLongitude = ""
+    var locations = [Double]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +31,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         titleTextLabel.text = titleName
         wikiAPIManager.delegate = self
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        wikiAPIManager.fetchWikiDetailsResults(keyword: titleName, imageName: imageName)
+        wikiAPIManager.fetchWikiDetailsResults(keyword: titleName, imageName: imageName, locations: locations)
     }
     
     override func didReceiveMemoryWarning() {
@@ -55,8 +55,6 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
             self.view.makeToast("saved! :)")
         }
     }
-    
-    
     
     @IBAction func wikiPagePressed(_ sender: Any) {
         let webSafari = SFSafariViewController(url: URL(string: wikiUrl)!)
@@ -83,8 +81,6 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         
         present(activityViewController, animated: true, completion: nil)
     }
-    
-    
 }
 
 
@@ -98,6 +94,7 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
         
         self.wikiUrl = self.wikiUrl + newKeyWord
         self.wikiResult = wikiDetails
+        
         DispatchQueue.main.async {
             MBProgressHUD.hide(for: self.view, animated: true)
             self.contentTextView.text = wikiDetails.content
@@ -117,7 +114,8 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
             case .networkRequestFailed:
                 let retryAction = UIAlertAction(title: "Retry", style: .default, handler: { (action) in
                     MBProgressHUD.showAdded(to: self.view, animated: true)
-                    self.wikiAPIManager.fetchWikiDetailsResults(keyword: self.titleName, imageName: self.imageName)
+
+                    self.wikiAPIManager.fetchWikiDetailsResults(keyword: self.titleName, imageName: self.imageName, locations: self.locations)
                 })
                 
                 let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)

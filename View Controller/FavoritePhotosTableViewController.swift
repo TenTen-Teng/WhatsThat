@@ -11,7 +11,6 @@ class FavoritePhotosTableViewController: UITableViewController {
     
     var favoriteList = PersistanceManager.likeInstance.fetchFavoriteList()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -19,6 +18,7 @@ class FavoritePhotosTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -39,7 +39,6 @@ class FavoritePhotosTableViewController: UITableViewController {
         }
         
         cell.photoIdenText.text = favoriteItem.title
-        
         return cell
     }
     
@@ -56,13 +55,20 @@ class FavoritePhotosTableViewController: UITableViewController {
         }
     }
     
+
+    @IBAction func mapView(_ sender: Any) {
+        performSegue(withIdentifier: "mapSegue", sender: self.favoriteList)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "mapSegue") {
+        if segue.identifier == "mapSegue" {
             let mapViewController = segue.destination as! MapViewController
-            
-        } else if (segue.identifier == "favorDetailsSegue") {
+            mapViewController.wikiResults = sender as! [WikipediaResult]
+
+        }
+        
+        if segue.identifier == "favorDetailsSegue" {
             let photoDetailsViewController = segue.destination as! PhotoDetailsViewController
-            
             photoDetailsViewController.titleName = sender as! String
         }
     }

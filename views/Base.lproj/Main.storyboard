@@ -145,12 +145,13 @@
                     <navigationItem key="navigationItem" title="Favorite" id="Izg-z2-z8g">
                         <barButtonItem key="rightBarButtonItem" title="Map" id="S6q-Se-GtE">
                             <connections>
-                                <segue destination="NLF-SN-pJW" kind="show" id="FAY-3A-uId"/>
+                                <action selector="mapView:" destination="hia-7m-m25" id="GHH-ZD-ZM3"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="zWE-MC-dUp" kind="show" identifier="favorDetailsSegue" id="glQ-lK-MMR"/>
+                        <segue destination="NLF-SN-pJW" kind="show" identifier="mapSegue" id="mh4-iI-C6R"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trW-d2-TRC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -178,6 +179,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Frb-Jd-hrk"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="p6b-k8-zs3" id="2rX-DB-4gJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sKP-Gy-4WL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
