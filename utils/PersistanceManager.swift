@@ -44,5 +44,16 @@ class PersistanceManager {
         userDefaults.set(data, forKey: favoriteKey)
     }
     
+    func unfavorite(_ unfavorite: Int) {
+        let userDefaults = UserDefaults.standard
+        
+        var newFavoriteList = fetchFavoriteList()
+        newFavoriteList.remove(at: unfavorite)
+        
+        let data = NSKeyedArchiver.archivedData(withRootObject: newFavoriteList)
+        
+        userDefaults.set(data, forKey: favoriteKey)
+    }
+    
 }
 

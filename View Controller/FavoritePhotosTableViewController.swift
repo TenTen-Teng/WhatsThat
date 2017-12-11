@@ -11,6 +11,7 @@ class FavoritePhotosTableViewController: UITableViewController {
     
     var favoriteList = PersistanceManager.likeInstance.fetchFavoriteList()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -44,6 +45,16 @@ class FavoritePhotosTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "favorDetailsSegue", sender: favoriteList[indexPath.row].title)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            PersistanceManager.likeInstance.unfavorite(indexPath.row)
+            favoriteList.remove(at: indexPath.row)
+
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            self.view.makeToast("unfavorite!")
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
