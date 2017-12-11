@@ -22,6 +22,8 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     var wikiResult = WikipediaResult(title: "", content: "", imageName: "")
     let wikiAPIManager = WikipediaAPIManager()
     var imageName = ""
+    var locLatitude = ""
+    var locLongitude = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

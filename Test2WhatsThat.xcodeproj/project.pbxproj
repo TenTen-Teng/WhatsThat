@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		826D1BDFB0DD3CB0B8426DED /* Pods_Test2WhatsThat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF3627F08631120E056C3D86 /* Pods_Test2WhatsThat.framework */; };
 		9816F8111FDEE5E80055823E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9816F8101FDEE5E80055823E /* MapViewController.swift */; };
+		9816F8151FDEE7970055823E /* LocationFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9816F8141FDEE7970055823E /* LocationFinder.swift */; };
 		981F10441FC267B4006E96DB /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981F10431FC267B4006E96DB /* PhotoDetailsViewController.swift */; };
 		981F104A1FC26F61006E96DB /* WikipediaResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981F10491FC26F61006E96DB /* WikipediaResult.swift */; };
 		981F104D1FC26FB5006E96DB /* WikipediaAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981F104C1FC26FB5006E96DB /* WikipediaAPIManager.swift */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		9816F8101FDEE5E80055823E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		9816F8141FDEE7970055823E /* LocationFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFinder.swift; sourceTree = "<group>"; };
 		981F10431FC267B4006E96DB /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 		981F10491FC26F61006E96DB /* WikipediaResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaResult.swift; sourceTree = "<group>"; };
 		981F104C1FC26FB5006E96DB /* WikipediaAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaAPIManager.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				981F104C1FC26FB5006E96DB /* WikipediaAPIManager.swift */,
 				983B555B1FC141CE000CCBA9 /* GoogleVisionAPIManager.swift */,
 				98ADD32B1FD1D0690064CCFC /* PersistanceManager.swift */,
+				9816F8141FDEE7970055823E /* LocationFinder.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9816F8151FDEE7970055823E /* LocationFinder.swift in Sources */,
 				981F104D1FC26FB5006E96DB /* WikipediaAPIManager.swift in Sources */,
 				9848DE231FC13227006BC161 /* MenuViewController.swift in Sources */,
 				981F104A1FC26F61006E96DB /* WikipediaResult.swift in Sources */,

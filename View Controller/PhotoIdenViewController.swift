@@ -20,10 +20,16 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
     var pickedImage: UIImage!
     var imageName = ""
     let persistanceManager = PersistanceManager()
+    let locationFinder = LocationFinder()
+    var locLatitude = ""
+    var locLongitude = ""
     var imagePath = NSURL()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationFinder.delegate = self
+        googleVisionAPIManager.delegate = self
+
         chooseImage()
     }
     
@@ -65,13 +71,12 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         
         imageView.image = image
-        
         pickedImage = image
         imageName = String(persistanceManager.fetchFavoriteList().count)
         saveImageDocumentDirectory(image: pickedImage, name: String(imageName))
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        googleVisionAPIManager.delegate = self
+        locationFinder.findLocation()
         googleVisionAPIManager.fetchGoogleVisionResults(image: image)
         
         picker.dismiss(animated: true, completion: nil)
@@ -102,6 +107,8 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         photoDetailsViewController.titleName = sender as! String
         photoDetailsViewController.imageName = imageName
+        photoDetailsViewController.locLatitude = locLatitude
+        photoDetailsViewController.locLongitude = locLongitude
     }
     
     func getDirectoryPath() -> String {
@@ -128,6 +135,7 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
             print("Already dictionary created.")
         }
     }
+    
 }
 
 extension PhotoIdenViewController: IdentificationDelegate {
@@ -166,7 +174,23 @@ extension PhotoIdenViewController: IdentificationDelegate {
             
         }
     }
+}
+
+//adhere to the LocationFinderDelegate protocol
+extension PhotoIdenViewController: LocationFinderDelegate {
+    func locationFound(latitude: Double, longitude: Double) {
+        //MBProgressHUD.hide(for: self.view, animated: true)
+        locLatitude = String(latitude)
+        locLongitude = String(longitude)
+    }
     
+    func locationNotFound(reason: LocationFinder.FailureReason) {
+        DispatchQueue.main.async {
+            MBProgressHUD.hide(for: self.view, animated: true)
+            //TODO pop up an alert controller with message
+            print(reason.rawValue)
+        }
+    }
 }
 
 
