@@ -27,6 +27,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("###########", titleName)
         
         titleTextLabel.text = titleName
         wikiAPIManager.delegate = self

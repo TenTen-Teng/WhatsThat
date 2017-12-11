@@ -15,7 +15,6 @@ class SearchTimelineTableViewController: TWTRTimelineViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(query)
         
         dataSource = TWTRSearchTimelineDataSource(searchQuery: query, apiClient: TWTRAPIClient())
     }
