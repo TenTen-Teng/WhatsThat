@@ -99,6 +99,9 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
         DispatchQueue.main.async {
             MBProgressHUD.hide(for: self.view, animated: true)
             self.contentTextView.text = wikiDetails.content
+            let range = NSMakeRange(0, 0)
+            self.contentTextView.scrollRangeToVisible(range)
+
         }
     }
     
