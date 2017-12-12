@@ -90,7 +90,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     //press share button, share wiki detail
     @IBAction func shareButtonPressed(_ sender: Any) {
         let resultShare = details
-        let textToShare = "Check out what I got! \(resultShare)!"
+        let textToShare = "Check out what I got from What's That app!  \(resultShare)! Check the link: \(self.wikiUrl) "
         let activityViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
         
         present(activityViewController, animated: true, completion: nil)

@@ -28,6 +28,7 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         locationFinder.delegate = self
+        locationFinder.findLocation()
         googleVisionAPIManager.delegate = self
 
         //choose image from camera or photo library
@@ -90,9 +91,6 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         //show progress bar
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        
-        //get location
-        locationFinder.findLocation()
         
         //fetch google vision results from googleVision API by passing image
         googleVisionAPIManager.fetchGoogleVisionResults(image: image)
@@ -209,6 +207,7 @@ extension PhotoIdenViewController: LocationFinderDelegate {
     }
     
     func locationNotFound(reason: LocationFinder.FailureReason) {
+        self.view.makeToast("Can not get location! :( ...")
         DispatchQueue.main.async {
             MBProgressHUD.hide(for: self.view, animated: true)
             //TODO pop up an alert controller with message

@@ -62,7 +62,6 @@ class FavoritePhotosTableViewController: UITableViewController {
         }
     }
     
-
     @IBAction func mapView(_ sender: Any) {
         performSegue(withIdentifier: "mapSegue", sender: self.favoriteList)
     }

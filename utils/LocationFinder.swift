@@ -13,8 +13,6 @@
 //  Created by Jared Alexander on 11/27/17.
 //  Copyright © 2017 gwu. All rights reserved.
 //
-
-
 import Foundation
 import CoreLocation
 
@@ -27,7 +25,7 @@ class LocationFinder: NSObject {
     
     enum FailureReason: String {
         case noPermission = "Location permission not available"
-        case timeout = "Time out"
+        case timeout = "It took too long to find your location"
         case error = "Error finding location"
     }
     
