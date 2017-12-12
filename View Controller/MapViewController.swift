@@ -12,7 +12,7 @@ import MapKit
 class MapViewController: UIViewController {
     var wikiResults = [WikipediaResult]()
     var annotationTitle = ""
-    var pinDetail = PinDetails(title: "", coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
+    var pinDetail = PinDetails(title: "", coordinate: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), imageName: "")
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -22,7 +22,7 @@ class MapViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         for item in wikiResults {
-            pinDetail = PinDetails(title: item.title, coordinate: CLLocationCoordinate2D(latitude: item.locations[0], longitude: item.locations[1]))
+            pinDetail = PinDetails(title: item.title, coordinate: CLLocationCoordinate2D(latitude: item.locations[0], longitude: item.locations[1]), imageName: item.imageName)
         
             mapView.addAnnotation(pinDetail)
         }
@@ -33,7 +33,11 @@ class MapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    func getDirectoryPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
 }
 
 extension MapViewController: MKMapViewDelegate {
@@ -42,7 +46,7 @@ extension MapViewController: MKMapViewDelegate {
         
         let identifier = "mapDetailSegue"
         var view: MKMarkerAnnotationView
-
+        
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
             as? MKMarkerAnnotationView {
             dequeuedView.annotation = annotation
@@ -52,6 +56,17 @@ extension MapViewController: MKMapViewDelegate {
             view.canShowCallout = true
             view.calloutOffset = CGPoint(x: -5, y: 5)
             view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            
+            let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(annotation.imageName + ".jpg")
+            
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: imagePAth){
+                view.image = UIImage(contentsOfFile: imagePAth)!
+            
+                view.frame.size = CGSize(width: 30.0, height: 30.0)
+            }else{
+                print("No Image")
+            }
         }
         return view
     }
@@ -63,11 +78,14 @@ extension MapViewController: MKMapViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "mapDetailSegue") {
             let photoDetailsViewControllFromMap = segue.destination as! PhotoDetailsViewController
-        
+            
             photoDetailsViewControllFromMap.titleName = sender as! String
         }
     }
 }
+
+
+
 
 
 

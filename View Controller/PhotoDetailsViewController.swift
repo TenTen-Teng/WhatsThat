@@ -27,7 +27,6 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("###########", titleName)
         
         titleTextLabel.text = titleName
         wikiAPIManager.delegate = self
@@ -62,8 +61,6 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         
         present(webSafari, animated: true, completion: nil)
     }
-    
-    
     
     @IBAction func tweetButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "tweetSegue", sender: titleName)
