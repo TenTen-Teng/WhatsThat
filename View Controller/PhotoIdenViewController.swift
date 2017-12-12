@@ -8,6 +8,7 @@
 
 import UIKit
 import MBProgressHUD
+import Toast_Swift
 
 class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -29,53 +30,71 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         locationFinder.delegate = self
         googleVisionAPIManager.delegate = self
 
+        //choose image from camera or photo library
         chooseImage()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //pop up a action sheet and choose image
     private func chooseImage() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         
+        //set action sheet
         let actionSheet = UIAlertController(title: "Photo Source", message: "Choose a source", preferredStyle: .actionSheet)
         
+        //choose image from camera
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: {
             (action: UIAlertAction) in
             
             if UIImagePickerController.isSourceTypeAvailable(.camera){
+                //pick image from camera
                 imagePickerController.sourceType = .camera
                 self.present(imagePickerController, animated: true, completion: nil)
             } else {
-                //need to handle camera not available situation
-                print("Camera not available")
+                //Camera not available, toast a message to user
+                self.view.makeToast("Camera not available :( ... ")
             }
         }))
         
+        //choose image from photo library
         actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: {
             (action: UIAlertAction) in
             imagePickerController.sourceType = .photoLibrary
             self.present(imagePickerController, animated: true, completion: nil)
         }))
         
+        //cancel
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         self.present(actionSheet, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        //get image
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         
+        //show it to image view
         imageView.image = image
+        
         pickedImage = image
+        
+        //count current number of image in favorite list and set number as current image name
         imageName = String(persistanceManager.fetchFavoriteList().count)
+        
+        //save current image to document directory
         saveImageDocumentDirectory(image: pickedImage, name: String(imageName))
         
+        //show progress bar
         MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        //get location
         locationFinder.findLocation()
+        
+        //fetch google vision results from googleVision API by passing image
         googleVisionAPIManager.fetchGoogleVisionResults(image: image)
         
         picker.dismiss(animated: true, completion: nil)
@@ -92,6 +111,7 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath) as! PhotoIdentificationTableViewCell
         
+        //set table row
         cell.descriptionLabel?.text = results[indexPath.row].description
         cell.scoreLabel?.text =  results[indexPath.row].score
         return cell
@@ -109,21 +129,24 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
         photoDetailsViewController.locations = locations
     }
     
+    //get image directory path
     func getDirectoryPath() -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
     
+    //save image to document directory
     func saveImageDocumentDirectory(image: UIImage, name: String){
         let fileManager = FileManager.default
         let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(name + ".jpg")
         let image = image
-        print(paths)
+        
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         fileManager.createFile(atPath: paths as String, contents: imageData, attributes: nil)
     }
     
+    //if directory path doesn't exist, create a dirextory
     func createDirectory(){
         let fileManager = FileManager.default
         let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("WhatsThatDirectory")
@@ -136,15 +159,19 @@ class PhotoIdenViewController: UIViewController, UITableViewDelegate, UITableVie
     
 }
 
+//adhere to the IdentificationDelegate protocol
 extension PhotoIdenViewController: IdentificationDelegate {
+    //get google vision result, return results
     func resultsFound(googleVisionResults: [GoogleVisionResult]) {
         self.results = googleVisionResults
         DispatchQueue.main.async {
+            //hide progress bar
             MBProgressHUD.hide(for: self.view, animated: true)
             self.tableView.reloadData()
         }
     }
     
+    //return failure reasons
     func resultsNotFound(reason: GoogleVisionAPIManager.FailureReason) {
         DispatchQueue.main.async {
             MBProgressHUD.hide(for: self.view, animated: true)

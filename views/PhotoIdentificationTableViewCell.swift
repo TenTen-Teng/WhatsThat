@@ -9,8 +9,6 @@
 import UIKit
 
 class PhotoIdentificationTableViewCell: UITableViewCell {
-    
-
     @IBOutlet weak var descriptionLabel: UILabel!
 
     @IBOutlet weak var scoreLabel: UILabel!

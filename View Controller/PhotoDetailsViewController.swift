@@ -28,9 +28,15 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //set title
         titleTextLabel.text = titleName
+        
         wikiAPIManager.delegate = self
+        
+        //show progress bar
         MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        //fetch detail from Wiki API
         wikiAPIManager.fetchWikiDetailsResults(keyword: titleName, imageName: imageName, locations: locations)
     }
     
@@ -39,29 +45,38 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         // Dispose of any resources that can be recreated.
     }
     
-    
+    //press save button
     @IBAction func likeButtonPressed(_ sender: Any) {
+        //get current favorite list
         let currentFavoriteList = PersistanceManager.likeInstance.fetchFavoriteList()
         
+        //check current favorite list is empty or not
         if currentFavoriteList.count != 0 {
+            //current favorite list is not empty, check current item does exist or not
             if !currentFavoriteList.contains(where: {$0.title == wikiResult.title}) {
+                //current item doesn't exist, save it to favorite list
                 PersistanceManager.likeInstance.saveFavorite(wikiResult)
+                //toast a message to user
                 self.view.makeToast("saved! :)")
             } else{
+                //current item already exist, don't save it again and toast a message to user
                 self.view.makeToast("already saved! :)")
             }
         } else {
+            //current favorite list is empty, save current item to favorite list
             PersistanceManager.likeInstance.saveFavorite(wikiResult)
+            //toase a message to user
             self.view.makeToast("saved! :)")
         }
     }
     
+    //press wiki button, to safarViewController
     @IBAction func wikiPagePressed(_ sender: Any) {
         let webSafari = SFSafariViewController(url: URL(string: wikiUrl)!)
-        
         present(webSafari, animated: true, completion: nil)
     }
     
+    //press tweer button, show tweet timeline
     @IBAction func tweetButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "tweetSegue", sender: titleName)
     }
@@ -72,6 +87,7 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
         searchTimelineViewController.query = sender as! String
     }
     
+    //press share button, share wiki detail
     @IBAction func shareButtonPressed(_ sender: Any) {
         let resultShare = details
         let textToShare = "Check out what I got! \(resultShare)!"
@@ -81,12 +97,14 @@ class PhotoDetailsViewController: UIViewController, SFSafariViewControllerDelega
     }
 }
 
-
+//adhere to the WikiDetailsDelegate protocol
 extension PhotoDetailsViewController: WikiDetailsDelegate {
     func detailsFound(wikiDetails: WikipediaResult) {
         self.details = wikiDetails.title
         
         let range = NSMakeRange(0, wikiDetails.title.count)
+        
+        //use regular expression to replace blank between words to underscore
         let regular = try! NSRegularExpression(pattern: " ", options:.caseInsensitive)
         let newKeyWord = regular.stringByReplacingMatches(in: wikiDetails.title, options: [], range: range, withTemplate: "_")
         
@@ -94,8 +112,13 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
         self.wikiResult = wikiDetails
         
         DispatchQueue.main.async {
+            //hide progress bar
             MBProgressHUD.hide(for: self.view, animated: true)
+            
+            //set textView
             self.contentTextView.text = wikiDetails.content
+            
+            //set text view scorllable
             let range = NSMakeRange(0, 0)
             self.contentTextView.scrollRangeToVisible(range)
 
@@ -104,6 +127,7 @@ extension PhotoDetailsViewController: WikiDetailsDelegate {
     
     func detailsNotFound(reason: WikipediaAPIManager.FailureReason) {
         DispatchQueue.main.async {
+            //hide progress bar
             MBProgressHUD.hide(for: self.view, animated: true)
             
             let alertController = UIAlertController(title: "Problem fetching Wikipedia results", message: reason.rawValue, preferredStyle: .alert)

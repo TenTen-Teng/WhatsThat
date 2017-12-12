@@ -7,6 +7,7 @@
 //
 import Foundation
 
+//protocol for FavoriteIdenDelegate results, return a list of WikipediaResult or not found
 protocol FavoriteIdenDelegate {
     func listFound(favs: [WikipediaResult])
     func listNotFound()
@@ -18,6 +19,7 @@ class PersistanceManager {
     static let likeInstance = PersistanceManager()
     let favoriteKey = "favorite"
     
+    //fetch favorite list from Persistance
     func fetchFavoriteList() -> [WikipediaResult] {
         let userDefaults = UserDefaults.standard
         
@@ -33,6 +35,7 @@ class PersistanceManager {
         }
     }
     
+    //save a favorite to Persistance
     func saveFavorite(_ favorite: WikipediaResult) {
         let userDefaults = UserDefaults.standard
         
@@ -44,6 +47,7 @@ class PersistanceManager {
         userDefaults.set(data, forKey: favoriteKey)
     }
     
+    //unfavorite a item, delete it from Persistance
     func unfavorite(_ unfavorite: Int) {
         let userDefaults = UserDefaults.standard
         

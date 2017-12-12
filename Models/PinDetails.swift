@@ -10,6 +10,7 @@ import Foundation
 import MapKit
 import Contacts
 
+//model for map display
 class PinDetails: NSObject, MKAnnotation {
     let title: String?
     let coordinate: CLLocationCoordinate2D

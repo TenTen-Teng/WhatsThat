@@ -19,8 +19,8 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        // Do any additional setup after loading the view.
         
+        //set pins to map
         for item in wikiResults {
             pinDetail = PinDetails(title: item.title, coordinate: CLLocationCoordinate2D(latitude: item.locations[0], longitude: item.locations[1]), imageName: item.imageName)
         
@@ -30,9 +30,9 @@ class MapViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //get image from document directorys
     func getDirectoryPath() -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory = paths[0]
@@ -52,17 +52,22 @@ extension MapViewController: MKMapViewDelegate {
             dequeuedView.annotation = annotation
             view = dequeuedView
         } else {
+            //set map marker
             view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             view.canShowCallout = true
             view.calloutOffset = CGPoint(x: -5, y: 5)
             view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             
+            //get image path
             let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(annotation.imageName + ".jpg")
             
             let fileManager = FileManager.default
+            
+            //if image exist, show it on map
             if fileManager.fileExists(atPath: imagePAth){
                 view.image = UIImage(contentsOfFile: imagePAth)!
-            
+                
+                //resize image to 30 * 30
                 view.frame.size = CGSize(width: 30.0, height: 30.0)
             }else{
                 print("No Image")
@@ -71,6 +76,7 @@ extension MapViewController: MKMapViewDelegate {
         return view
     }
     
+    //when press info button, turn to detail page
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         performSegue(withIdentifier: "mapDetailSegue", sender: view.annotation?.title ?? "")
     }
@@ -78,7 +84,6 @@ extension MapViewController: MKMapViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "mapDetailSegue") {
             let photoDetailsViewControllFromMap = segue.destination as! PhotoDetailsViewController
-            
             photoDetailsViewControllFromMap.titleName = sender as! String
         }
     }

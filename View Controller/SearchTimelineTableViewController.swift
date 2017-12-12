@@ -10,12 +10,10 @@ import UIKit
 import TwitterKit
 
 class SearchTimelineTableViewController: TWTRTimelineViewController{
-    
+    //query for search keyword
     var query = ""
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         dataSource = TWTRSearchTimelineDataSource(searchQuery: query, apiClient: TWTRAPIClient())
     }
 }

@@ -6,6 +6,15 @@
 //  Copyright © 2017 李腾. All rights reserved.
 //
 
+//
+//  LocationFinder.swift
+//  pushuptracker17
+//
+//  Created by Jared Alexander on 11/27/17.
+//  Copyright © 2017 gwu. All rights reserved.
+//
+
+
 import Foundation
 import CoreLocation
 
@@ -18,7 +27,7 @@ class LocationFinder: NSObject {
     
     enum FailureReason: String {
         case noPermission = "Location permission not available"
-        case timeout = "It took too long to find your location"
+        case timeout = "Time out"
         case error = "Error finding location"
     }
     

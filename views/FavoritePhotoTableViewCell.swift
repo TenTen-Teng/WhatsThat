@@ -9,7 +9,6 @@
 import UIKit
 
 class FavoritePhotoTableViewCell: UITableViewCell {
-    
     @IBOutlet weak var photoIdenText: UILabel!
     
     @IBOutlet weak var favrImage: UIImageView!
@@ -24,5 +23,4 @@ class FavoritePhotoTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    
 }
